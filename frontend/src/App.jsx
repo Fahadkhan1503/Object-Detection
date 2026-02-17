@@ -1,4 +1,8 @@
 import React, { useState, useRef } from "react";
+import { Folder, Check, BarChart3, Video, Rocket, RotateCcw, Download } from "lucide-react";
+import Navbar from "./Navbar";
+import Footer from "./Footer";
+import { colors, gradients } from "./colors";
 
 function App() {
   const [videoFile, setVideoFile] = useState(null);
@@ -117,153 +121,225 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-gray-50 to-blue-50 p-4 md:p-6">
-      <header className="text-center mb-8 md:mb-12">
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3">
-          Object Detection & Counting System
-        </h1>
-        <p className="text-gray-600 text-lg">
-          Digital Image Processing Project - Detect, track, and count object by
-          size
-        </p>
-      </header>
+    <div style={{ backgroundColor: colors.background.light }} className="min-h-screen flex flex-col">
+      <Navbar />
+      
+      <main className="flex-1">
+        <div className="p-4 md:p-6">
+          <header className="text-center mb-8 md:mb-12">
+            <h1 style={{ color: colors.gray.dark }} className="text-3xl md:text-4xl font-bold mb-3">
+              Object Detection System
+            </h1>
+            <p style={{ color: colors.gray.normal }} className="text-lg">
+              Detect, track, and count object by
+              size
+            </p>
+          </header>
 
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
-        {/* Upload */}
-        <div className="bg-white rounded-2xl shadow-xl p-6 md:p-8">
-          <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
-            📁 Upload Video
-          </h2>
-          <div
-            className="border-3 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-blue-400 transition-colors cursor-pointer bg-gray-50 hover:bg-blue-50"
-            onClick={() => fileInputRef.current?.click()}
-          >
-            <input
-              type="file"
-              accept="video/*"
-              onChange={handleFileChange}
-              ref={fileInputRef}
-              className="hidden"
-            />
-            {videoFile ? (
-              <div className="space-y-3">
-                <div className="text-green-500 text-5xl mb-3">✅</div>
-                <p className="font-semibold text-gray-800 text-lg truncate">
-                  {videoFile.name}
-                </p>
-              </div>
-            ) : (
-              <div className="text-gray-400 text-6xl">📁</div>
-            )}
-          </div>
-
-          {previewUrl && (
-            <div className="mt-4">
-              <h3 className="text-lg font-semibold text-gray-700 mb-3">
-                Original Video Preview
-              </h3>
-              <video
-                src={previewUrl}
-                controls
-                className="w-full h-48 md:h-64 object-contain rounded-lg shadow-md bg-black"
-              />
-            </div>
-          )}
-
-          {error && (
-            <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
-              <p className="text-red-600">{error}</p>
-            </div>
-          )}
-
-          <div className="mt-6 space-y-4">
-            <button
-              onClick={processVideo}
-              disabled={!videoFile || loading}
-              className={`w-full py-4 px-6 rounded-xl font-semibold text-lg text-white ${
-                !videoFile || loading
-                  ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-linear-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700"
-              }`}
-            >
-              {loading ? "Processing Video..." : "🚀 Detect & Count Objects"}
-            </button>
-
-            <button
-              onClick={resetAll}
-              className="w-full py-3 px-6 bg-gray-100 hover:bg-gray-200 rounded-xl font-medium text-gray-700"
-            >
-              🔄 Reset
-            </button>
-          </div>
-        </div>
-
-        {/* Results */}
-        <div className="bg-white rounded-2xl shadow-xl p-6 md:p-8">
-          <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
-            📊 Detection Results
-          </h2>
-
-          {results ? (
-            <>
-              <div className="mb-6">
-                <h3 className="text-xl font-semibold text-gray-700 mb-4">
-                  🎥 Processed Video
-                </h3>
-                {processedVideoUrl ? (
-                  <video
-                    key={videoKey}
-                    ref={videoRef}
-                    src={processedVideoUrl}
-                    controls
-                    className="w-full h-64 md:h-72 object-contain rounded-lg shadow-lg bg-black"
-                    onError={handleVideoError}
-                  />
-                ) : (
-                  <p className="text-gray-500">Processed video loading...</p>
-                )}
-              </div>
-
-              {/* Report */}
-              <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                <h3 className="font-bold mb-2">Detection Summary</h3>
-                <p>Total Frames: {results.frame_count}</p>
-                <p className="font-semibold text-gray-700 mt-3 mb-2">Top Detected Objects:</p>
-                {(() => {
-                  const objectCounts = Object.entries(results)
-                    .filter(([key]) => !['frame_count', 'timestamp', 'video_url', 'download_url', 'filename', 'total'].includes(key))
-                    .sort(([,a], [,b]) => b - a)
-                    .slice(0, 5);
-                  
-                  return objectCounts.length > 0 ? (
-                    objectCounts.map(([name, count]) => (
-                      <p key={name} className="text-gray-600">
-                        {name}: <span className="font-semibold">{count}</span>
-                      </p>
-                    ))
-                  ) : (
-                    <p className="text-gray-500">No objects detected</p>
-                  );
-                })()}
-                <p className="mt-3 border-t pt-3">Total Unique: {results.total}</p>
-                <p className="text-sm text-gray-500">
-                  Processed at:{" "}
-                  {new Date(results.timestamp).toLocaleTimeString()}
-                </p>
-              </div>
-
-              <button
-                onClick={downloadVideo}
-                className="mt-4 w-full py-3 px-6 bg-green-500 hover:bg-green-600 rounded-xl font-semibold text-white"
+          <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
+            {/* Upload */}
+            <div style={{ backgroundColor: colors.background.normal }} className="rounded-2xl shadow-xl p-6 md:p-8">
+              <h2 style={{ color: colors.gray.dark }} className="text-2xl font-bold mb-6 flex items-center">
+                <Folder className="w-6 h-6 mr-2" style={{ color: colors.primary.normal }} /> Upload Video
+              </h2>
+              {/* <div
+                className="border-3 border-dashed rounded-xl py-2 text-center hover:transition-colors cursor-pointer"
+                style={{
+                  borderColor: colors.primary.light,
+                  backgroundColor: colors.background.dark,
+                }}
+                onClick={() => fileInputRef.current?.click()}
               >
-                ⬇️ Download Processed Video
-              </button>
-            </>
-          ) : (
-            <p className="text-gray-400">No results yet.</p>
-          )}
+                <input
+                  type="file"
+                  accept="video/*"
+                  onChange={handleFileChange}
+                  ref={fileInputRef}
+                  className="hidden"
+                />
+                {videoFile ? (
+                  <div className="space-y-3">
+                    <Check className="w-16 h-16 mx-auto mb-3" style={{ color: colors.success.normal }} />
+                    <p style={{ color: colors.gray.dark }} className="font-semibold text-lg truncate">
+                      {videoFile.name}
+                    </p>
+                  </div>
+                ) : (
+                  <Folder className="w-20 h-20 mx-auto" style={{ color: colors.gray.normal }} />
+                )}
+              </div> */}
+              <div
+  className="border-2 border-dashed rounded-lg px-4 py-2 flex items-center justify-between cursor-pointer hover:transition-colors"
+  style={{
+    borderColor: colors.primary.light,
+    backgroundColor: colors.background.dark,
+  }}
+  onClick={() => fileInputRef.current?.click()}
+>
+  <input
+    type="file"
+    accept="video/*"
+    onChange={handleFileChange}
+    ref={fileInputRef}
+    className="hidden"
+  />
+
+  {videoFile ? (
+    <div className="flex items-center gap-2 truncate">
+      <Check className="w-5 h-5" style={{ color: colors.success.normal }} />
+      <p style={{ color: colors.gray.dark }} className="text-sm truncate">
+        {videoFile.name}
+      </p>
+    </div>
+  ) : (
+    <div className="flex items-center gap-2">
+      <Folder className="w-5 h-5" style={{ color: colors.gray.normal }} />
+      <span className="text-sm" style={{ color: colors.gray.normal }}>
+        Upload Video
+      </span>
+    </div>
+  )}
+</div>
+
+
+              {previewUrl && (
+                <div className="mt-4">
+                  <h3 style={{ color: colors.gray.dark }} className="text-lg font-semibold mb-3">
+                    Original Video Preview
+                  </h3>
+                  <video
+                    src={previewUrl}
+                    controls
+                    className="w-full h-48 md:h-64 object-contain rounded-lg shadow-md bg-black"
+                  />
+                </div>
+              )}
+
+              {error && (
+                <div
+                  className="mt-4 p-4 border rounded-lg"
+                  style={{
+                    backgroundColor: colors.danger.light,
+                    borderColor: colors.danger.normal,
+                  }}
+                >
+                  <p style={{ color: colors.danger.dark }}>{error}</p>
+                </div>
+              )}
+
+              <div className="mt-6 space-y-4">
+                <button
+                  onClick={processVideo}
+                  disabled={!videoFile || loading}
+                  className="w-full py-4 px-6 rounded-xl font-semibold text-lg text-white flex items-center justify-center gap-2 transition-all"
+                  style={{
+                    background: !videoFile || loading ? colors.gray.normal : gradients.primary,
+                    cursor: !videoFile || loading ? "not-allowed" : "pointer",
+                    opacity: !videoFile || loading ? 0.6 : 1,
+                  }}
+                >
+                  {loading ? "Processing Video..." : <><Rocket className="w-5 h-5" /> Detect & Count Objects</>}
+                </button>
+
+                <button
+                  onClick={resetAll}
+                  className="w-full py-3 px-6 rounded-xl font-medium flex items-center justify-center gap-2 hover:opacity-80 transition-opacity"
+                  style={{
+                    backgroundColor: colors.background.dark,
+                    color: colors.gray.dark,
+                  }}
+                >
+                  <RotateCcw className="w-5 h-5" /> Reset
+                </button>
+              </div>
+            </div>
+
+            {/* Results */}
+            <div style={{ backgroundColor: colors.background.normal }} className="rounded-2xl shadow-xl p-6 md:p-8">
+              <h2 style={{ color: colors.gray.dark }} className="text-2xl font-bold mb-6 flex items-center">
+                <BarChart3 className="w-6 h-6 mr-2" style={{ color: colors.secondary.normal }} /> Detection Results
+              </h2>
+
+              {results ? (
+                <>
+                  <div className="mb-6">
+                    <h3 style={{ color: colors.gray.dark }} className="text-xl font-semibold mb-4 flex items-center gap-2">
+                      <Video className="w-5 h-5" style={{ color: colors.secondary.normal }} /> Processed Video
+                    </h3>
+                    {processedVideoUrl ? (
+                      <video
+                        key={videoKey}
+                        ref={videoRef}
+                        src={processedVideoUrl}
+                        controls
+                        className="w-full h-64 md:h-72 object-contain rounded-lg shadow-lg bg-black"
+                        onError={handleVideoError}
+                      />
+                    ) : (
+                      <p style={{ color: colors.gray.normal }}>Processed video loading...</p>
+                    )}
+                  </div>
+
+                  {/* Report */}
+                  <div
+                    className="p-4 rounded-lg border"
+                    style={{
+                      backgroundColor: colors.background.dark,
+                      borderColor: colors.gray.normal,
+                    }}
+                  >
+                    <h3 style={{ color: colors.gray.dark }} className="font-bold mb-2">
+                      Detection Summary
+                    </h3>
+                    <p style={{ color: colors.gray.dark }}>Total Frames: {results.frame_count}</p>
+                    <p style={{ color: colors.gray.dark }} className="font-semibold mt-3 mb-2">
+                      Top Detected Objects:
+                    </p>
+                    {(() => {
+                      const objectCounts = Object.entries(results)
+                        .filter(([key]) => !['frame_count', 'timestamp', 'video_url', 'download_url', 'filename', 'total'].includes(key))
+                        .sort(([,a], [,b]) => b - a)
+                        .slice(0, 5);
+                      
+                      return objectCounts.length > 0 ? (
+                        objectCounts.map(([name, count]) => (
+                          <p key={name} style={{ color: colors.gray.normal }} className="text-sm md:text-base">
+                            {name}: <span style={{ color: colors.primary.normal }} className="font-semibold">{count}</span>
+                          </p>
+                        ))
+                      ) : (
+                        <p style={{ color: colors.gray.normal }}>No objects detected</p>
+                      );
+                    })()}
+                    <p
+                      style={{ color: colors.gray.dark, borderTopColor: colors.gray.normal }}
+                      className="mt-3 border-t pt-3 font-semibold"
+                    >
+                      Total Unique: {results.total}
+                    </p>
+                    <p style={{ color: colors.gray.normal }} className="text-sm">
+                      Processed at:{" "}
+                      {new Date(results.timestamp).toLocaleTimeString()}
+                    </p>
+                  </div>
+
+                  <button
+                    onClick={downloadVideo}
+                    className="mt-4 w-full py-3 px-6 rounded-xl font-semibold text-white flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"
+                    style={{ backgroundColor: colors.success.normal }}
+                  >
+                    <Download className="w-5 h-5" /> Download Processed Video
+                  </button>
+                </>
+              ) : (
+                <p style={{ color: colors.gray.normal }}>No results yet.</p>
+              )}
+            </div>
+          </div>
         </div>
-      </div>
+      </main>
+
+      <Footer />
     </div>
   );
 }
