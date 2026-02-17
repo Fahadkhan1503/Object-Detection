@@ -120,10 +120,10 @@ function App() {
     <div className="min-h-screen bg-linear-to-br from-gray-50 to-blue-50 p-4 md:p-6">
       <header className="text-center mb-8 md:mb-12">
         <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3">
-          🍎 Fruit Detection & Counting System
+          Object Detection & Counting System
         </h1>
         <p className="text-gray-600 text-lg">
-          Digital Image Processing Project - Detect, track, and count fruits by
+          Digital Image Processing Project - Detect, track, and count object by
           size
         </p>
       </header>
@@ -186,7 +186,7 @@ function App() {
                   : "bg-linear-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700"
               }`}
             >
-              {loading ? "Processing Video..." : "🚀 Detect & Count Fruits"}
+              {loading ? "Processing Video..." : "🚀 Detect & Count Objects"}
             </button>
 
             <button
@@ -228,11 +228,25 @@ function App() {
               <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
                 <h3 className="font-bold mb-2">Detection Summary</h3>
                 <p>Total Frames: {results.frame_count}</p>
-                <p>Small Fruits: {results.small}</p>
-                <p>Medium Fruits: {results.medium}</p>
-                <p>Large Fruits: {results.large}</p>
-                <p>Total Unique: {results.total}</p>
-                <p>
+                <p className="font-semibold text-gray-700 mt-3 mb-2">Top Detected Objects:</p>
+                {(() => {
+                  const objectCounts = Object.entries(results)
+                    .filter(([key]) => !['frame_count', 'timestamp', 'video_url', 'download_url', 'filename', 'total'].includes(key))
+                    .sort(([,a], [,b]) => b - a)
+                    .slice(0, 5);
+                  
+                  return objectCounts.length > 0 ? (
+                    objectCounts.map(([name, count]) => (
+                      <p key={name} className="text-gray-600">
+                        {name}: <span className="font-semibold">{count}</span>
+                      </p>
+                    ))
+                  ) : (
+                    <p className="text-gray-500">No objects detected</p>
+                  );
+                })()}
+                <p className="mt-3 border-t pt-3">Total Unique: {results.total}</p>
+                <p className="text-sm text-gray-500">
                   Processed at:{" "}
                   {new Date(results.timestamp).toLocaleTimeString()}
                 </p>
