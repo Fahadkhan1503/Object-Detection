@@ -1,5 +1,13 @@
 import React, { useState, useRef } from "react";
-import { Folder, Check, BarChart3, Video, Rocket, RotateCcw, Download } from "lucide-react";
+import {
+  Folder,
+  Check,
+  BarChart3,
+  Video,
+  Rocket,
+  RotateCcw,
+  Download,
+} from "lucide-react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import { colors, gradients } from "./colors";
@@ -109,41 +117,60 @@ function App() {
     const video = e.target;
     const errorCode = video?.error?.code;
     const errorMessage = video?.error?.message || "Unknown error";
-    
+
     const errorDetails = {
       code: errorCode,
       message: errorMessage,
       url: video?.src,
     };
-    
+
     console.error("Video playback error:", errorDetails);
     setError("Video failed to load. You can still download it.");
   };
 
+  
+  
   return (
-    <div style={{ backgroundColor: colors.background.light }} className="min-h-screen flex flex-col">
+    <div
+      // style={{ backgroundColor: colors.background.subtle }}
+      style={{ background: gradients.backgroundwall }}
+      className="min-h-screen flex flex-col"
+    >
       <Navbar />
-      
+
       <main className="flex-1">
-        <div className="p-4 md:p-6">
+        <div className="p-8 md:p-6">
           <header className="text-center mb-8 md:mb-12">
-            <h1 style={{ color: colors.gray.dark }} className="text-3xl md:text-4xl font-bold mb-3">
+            <h1
+              style={{ color: colors.gray.dark }}
+              className="text-3xl md:text-4xl font-bold mb-3"
+            >
               Object Detection System
             </h1>
             <p style={{ color: colors.gray.normal }} className="text-lg">
-              Detect, track, and count object by
-              size
+              Detect, track, and count object by size
             </p>
           </header>
 
-          <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
+          <div className="max-w-375 mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
+
             {/* Upload */}
-            <div style={{ backgroundColor: colors.background.normal }} className="rounded-2xl shadow-xl p-6 md:p-8">
-              <h2 style={{ color: colors.gray.dark }} className="text-2xl font-bold mb-6 flex items-center">
-                <Folder className="w-6 h-6 mr-2" style={{ color: colors.primary.normal }} /> Upload Video
+            <div
+              style={{ backgroundColor: colors.background.normal }}
+              className="rounded-2xl shadow-xl p-6 md:p-8"
+            >
+              <h2
+                style={{ color: colors.gray.dark }}
+                className="text-2xl font-bold mb-6 flex items-center"
+              >
+                <Folder
+                  className="w-6 h-6 mr-2"
+                  style={{ color: colors.primary.normal }}
+                />{" "}
+                Upload Video
               </h2>
-              {/* <div
-                className="border-3 border-dashed rounded-xl py-2 text-center hover:transition-colors cursor-pointer"
+              <div
+                className="border-2 border-dashed rounded-lg px-4 py-2 flex items-center justify-between cursor-pointer hover:transition-colors"
                 style={{
                   borderColor: colors.primary.light,
                   backgroundColor: colors.background.dark,
@@ -157,54 +184,42 @@ function App() {
                   ref={fileInputRef}
                   className="hidden"
                 />
+
                 {videoFile ? (
-                  <div className="space-y-3">
-                    <Check className="w-16 h-16 mx-auto mb-3" style={{ color: colors.success.normal }} />
-                    <p style={{ color: colors.gray.dark }} className="font-semibold text-lg truncate">
+                  <div className="flex items-center gap-2 truncate">
+                    <Check
+                      className="w-5 h-5"
+                      style={{ color: colors.success.normal }}
+                    />
+                    <p
+                      style={{ color: colors.gray.dark }}
+                      className="text-sm truncate"
+                    >
                       {videoFile.name}
                     </p>
                   </div>
                 ) : (
-                  <Folder className="w-20 h-20 mx-auto" style={{ color: colors.gray.normal }} />
+                  <div className="flex items-center gap-2">
+                    <Folder
+                      className="w-5 h-5"
+                      style={{ color: colors.gray.normal }}
+                    />
+                    <span
+                      className="text-sm"
+                      style={{ color: colors.gray.normal }}
+                    >
+                      Upload Video
+                    </span>
+                  </div>
                 )}
-              </div> */}
-              <div
-  className="border-2 border-dashed rounded-lg px-4 py-2 flex items-center justify-between cursor-pointer hover:transition-colors"
-  style={{
-    borderColor: colors.primary.light,
-    backgroundColor: colors.background.dark,
-  }}
-  onClick={() => fileInputRef.current?.click()}
->
-  <input
-    type="file"
-    accept="video/*"
-    onChange={handleFileChange}
-    ref={fileInputRef}
-    className="hidden"
-  />
-
-  {videoFile ? (
-    <div className="flex items-center gap-2 truncate">
-      <Check className="w-5 h-5" style={{ color: colors.success.normal }} />
-      <p style={{ color: colors.gray.dark }} className="text-sm truncate">
-        {videoFile.name}
-      </p>
-    </div>
-  ) : (
-    <div className="flex items-center gap-2">
-      <Folder className="w-5 h-5" style={{ color: colors.gray.normal }} />
-      <span className="text-sm" style={{ color: colors.gray.normal }}>
-        Upload Video
-      </span>
-    </div>
-  )}
-</div>
-
+              </div>
 
               {previewUrl && (
                 <div className="mt-4">
-                  <h3 style={{ color: colors.gray.dark }} className="text-lg font-semibold mb-3">
+                  <h3
+                    style={{ color: colors.gray.dark }}
+                    className="text-lg font-semibold mb-3"
+                  >
                     Original Video Preview
                   </h3>
                   <video
@@ -233,20 +248,29 @@ function App() {
                   disabled={!videoFile || loading}
                   className="w-full py-4 px-6 rounded-xl font-semibold text-lg text-white flex items-center justify-center gap-2 transition-all"
                   style={{
-                    background: !videoFile || loading ? colors.gray.normal : gradients.primary,
+                    background:
+                      !videoFile || loading
+                        ? colors.gray.normal
+                        : gradients.primary,
                     cursor: !videoFile || loading ? "not-allowed" : "pointer",
                     opacity: !videoFile || loading ? 0.6 : 1,
                   }}
                 >
-                  {loading ? "Processing Video..." : <><Rocket className="w-5 h-5" /> Detect & Count Objects</>}
+                  {loading ? (
+                    "Processing Video..."
+                  ) : (
+                    <>
+                      <Rocket className="w-5 h-5" /> Detect & Count Objects
+                    </>
+                  )}
                 </button>
 
                 <button
                   onClick={resetAll}
                   className="w-full py-3 px-6 rounded-xl font-medium flex items-center justify-center gap-2 hover:opacity-80 transition-opacity"
                   style={{
-                    backgroundColor: colors.background.dark,
-                    color: colors.gray.dark,
+                    backgroundColor: colors.gray.dark,
+                    color: colors.gray.light,
                   }}
                 >
                   <RotateCcw className="w-5 h-5" /> Reset
@@ -254,17 +278,36 @@ function App() {
               </div>
             </div>
 
-            {/* Results */}
-            <div style={{ backgroundColor: colors.background.normal }} className="rounded-2xl shadow-xl p-6 md:p-8">
-              <h2 style={{ color: colors.gray.dark }} className="text-2xl font-bold mb-6 flex items-center">
-                <BarChart3 className="w-6 h-6 mr-2" style={{ color: colors.secondary.normal }} /> Detection Results
+            {/* Results  */}
+            <div
+              // style={{ backgroundColor: #9477db }}
+              // style={{ background: "linear-gradient(135deg, #cfedfb 0%, #9fdbf6 50%, #56c0f0 100%)" }}
+              style={{ background: gradients.card }}
+              className="rounded-2xl shadow-xl p-6 md:p-8"
+            >
+              <h2
+                style={{ color: colors.gray.light }}
+                className="text-2xl font-bold mb-6 flex items-center"
+              >
+                <BarChart3
+                  className="w-6 h-6 mr-2"
+                  style={{ color: colors.primary.dark }}
+                />{" "}
+                Detection Results
               </h2>
 
               {results ? (
                 <>
                   <div className="mb-6">
-                    <h3 style={{ color: colors.gray.dark }} className="text-xl font-semibold mb-4 flex items-center gap-2">
-                      <Video className="w-5 h-5" style={{ color: colors.secondary.normal }} /> Processed Video
+                    <h3
+                      style={{ color: colors.gray.dark }}
+                      className="text-xl font-semibold mb-4 flex items-center gap-2"
+                    >
+                      <Video
+                        className="w-5 h-5"
+                        style={{ color: colors.primary.dark }}
+                      />{" "}
+                      Processed Video
                     </h3>
                     {processedVideoUrl ? (
                       <video
@@ -276,48 +319,86 @@ function App() {
                         onError={handleVideoError}
                       />
                     ) : (
-                      <p style={{ color: colors.gray.normal }}>Processed video loading...</p>
+                      <p style={{ color: colors.gray.normal }}>
+                        Processed video loading...
+                      </p>
                     )}
                   </div>
 
                   {/* Report */}
                   <div
-                    className="p-4 rounded-lg border"
+                    className="p-4 rounded-lg  shadow-xl  md:p-8 "
                     style={{
-                      backgroundColor: colors.background.dark,
-                      borderColor: colors.gray.normal,
+                      backgroundColor: colors.gray.light,
+                      // borderColor: colors.gray.normal,
                     }}
                   >
-                    <h3 style={{ color: colors.gray.dark }} className="font-bold mb-2">
+                    <h3
+                      style={{ color: colors.gray.dark }}
+                      className="font-bold mb-2"
+                    >
                       Detection Summary
                     </h3>
-                    <p style={{ color: colors.gray.dark }}>Total Frames: {results.frame_count}</p>
-                    <p style={{ color: colors.gray.dark }} className="font-semibold mt-3 mb-2">
+                    <p style={{ color: colors.gray.dark }}>
+                      Total Frames: {results.frame_count}
+                    </p>
+                    <p
+                      style={{ color: colors.gray.dark }}
+                      className="font-semibold mt-3 mb-2"
+                    >
                       Top Detected Objects:
                     </p>
                     {(() => {
                       const objectCounts = Object.entries(results)
-                        .filter(([key]) => !['frame_count', 'timestamp', 'video_url', 'download_url', 'filename', 'total'].includes(key))
-                        .sort(([,a], [,b]) => b - a)
+                        .filter(
+                          ([key]) =>
+                            ![
+                              "frame_count",
+                              "timestamp",
+                              "video_url",
+                              "download_url",
+                              "filename",
+                              "total",
+                            ].includes(key),
+                        )
+                        .sort(([, a], [, b]) => b - a)
                         .slice(0, 5);
-                      
+
                       return objectCounts.length > 0 ? (
                         objectCounts.map(([name, count]) => (
-                          <p key={name} style={{ color: colors.gray.normal }} className="text-sm md:text-base">
-                            {name}: <span style={{ color: colors.primary.normal }} className="font-semibold">{count}</span>
+                          <p
+                            key={name}
+                            style={{ color: colors.gray.normal }}
+                            className="text-sm md:text-base"
+                          >
+                            {name}:{" "}
+                            <span
+                              style={{ color: colors.primary.normal }}
+                              className="font-semibold"
+                            >
+                              {count}
+                            </span>
                           </p>
                         ))
                       ) : (
-                        <p style={{ color: colors.gray.normal }}>No objects detected</p>
+                        <p style={{ color: colors.gray.normal }}>
+                          No objects detected
+                        </p>
                       );
                     })()}
                     <p
-                      style={{ color: colors.gray.dark, borderTopColor: colors.gray.normal }}
+                      style={{
+                        color: colors.gray.dark,
+                        borderTopColor: colors.gray.normal,
+                      }}
                       className="mt-3 border-t pt-3 font-semibold"
                     >
                       Total Unique: {results.total}
                     </p>
-                    <p style={{ color: colors.gray.normal }} className="text-sm">
+                    <p
+                      style={{ color: colors.gray.normal }}
+                      className="text-sm"
+                    >
                       Processed at:{" "}
                       {new Date(results.timestamp).toLocaleTimeString()}
                     </p>
@@ -332,7 +413,7 @@ function App() {
                   </button>
                 </>
               ) : (
-                <p style={{ color: colors.gray.normal }}>No results yet.</p>
+                <p style={{ color:"white" }}>No results yet.</p>
               )}
             </div>
           </div>

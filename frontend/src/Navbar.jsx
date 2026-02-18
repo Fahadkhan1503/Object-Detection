@@ -1,7 +1,6 @@
 import React from "react";
 import { Zap } from "lucide-react";
 import { colors, gradients } from "./colors";
-
 function Navbar() {
   return (
     <nav style={{ background: gradients.primary }} className="text-white shadow-lg">
