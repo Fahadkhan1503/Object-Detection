@@ -25,7 +25,10 @@ ObjectDetect AI is a full-stack web application that lets you upload videos and 
 
 <img width="1920" height="883" alt="home" src="https://github.com/user-attachments/assets/16e001d0-becd-4eb2-ad85-c125fe0c4bce" />
 <img width="1900" height="880" alt="res" src="https://github.com/user-attachments/assets/e283d9bb-922e-4afd-ae57-2df92df91da8" />
+
+
 https://github.com/user-attachments/assets/bdb19769-2f19-4095-91a4-2a1ed6772b6b
+
 
 ---
 
