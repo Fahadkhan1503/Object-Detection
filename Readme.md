@@ -5,7 +5,7 @@
 ![ObjectDetect AI](https://img.shields.io/badge/YOLO-Powered-0d9488?style=for-the-badge)
 ![React](https://img.shields.io/badge/React-Frontend-2dd4bf?style=for-the-badge&logo=react)
 ![Python](https://img.shields.io/badge/Python-Backend-134e4a?style=for-the-badge&logo=python)
-![License](https://img.shields.io/badge/License-MIT-0f766e?style=for-the-badge)
+
 
 ObjectDetect AI is a full-stack web application that lets you upload videos and detect, track, and count objects by size in real time  all powered by a YOLO-based Python backend and a clean React frontend.
 
@@ -23,7 +23,9 @@ ObjectDetect AI is a full-stack web application that lets you upload videos and 
 
 ## 📸 Screenshot
 
-![ObjectDetect AI UI](./screenshot.png)
+<img width="1920" height="883" alt="home" src="https://github.com/user-attachments/assets/16e001d0-becd-4eb2-ad85-c125fe0c4bce" />
+<img width="1900" height="880" alt="res" src="https://github.com/user-attachments/assets/e283d9bb-922e-4afd-ae57-2df92df91da8" />
+https://github.com/user-attachments/assets/bdb19769-2f19-4095-91a4-2a1ed6772b6b
 
 ---
 
