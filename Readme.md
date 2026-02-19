@@ -80,7 +80,7 @@ cd backend
 
 
 # Install dependencies
-pip install fastapi uvicorn ultralytics opencv-python python-multipart
+pip install fastapi uvicorn ultralytics 
 
 # Start the backend server
 uvicorn app:app --reload --host 0.0.0.0 --port 8000
