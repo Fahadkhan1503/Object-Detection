@@ -12,7 +12,7 @@ function Navbar() {
         {/* Logo */}
         <div className="flex items-center gap-2 md:gap-3">
           <div
-            className="p-2 rounded-xl flex items-center justify-center flex-shrink-0"
+            className="p-2 rounded-xl flex items-center justify-center shrink-0"
             style={{ background: "rgba(255,255,255,0.15)", border: "1px solid rgba(255,255,255,0.25)" }}
           >
              <Zap className="w-5 h-5 text-white" />

@@ -12,7 +12,7 @@ function Footer() {
         
         {/* Left Side */}
         <div className="flex items-center gap-2 text-center md:text-left">
-          <Zap className="w-5 h-5 flex-shrink-0" style={{ color: colors.primary.normal }} />
+          <Zap className="w-5 h-5 shrink-0" style={{ color: colors.primary.normal }} />
           <span>
             ObjectDetect AI — Advanced object detection and tracking system powered by YOLO technology.
           </span>

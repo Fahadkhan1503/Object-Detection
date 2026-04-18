@@ -6,6 +6,11 @@ import {Folder,
   Rocket,
   RotateCcw,
   Download,
+  AlertCircle,
+  Zap,
+  Eye,
+  Target,
+  Film,
 } from "lucide-react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
@@ -176,38 +181,101 @@ function App() {
       <Navbar />
 
       <main className="flex-1">
-        <div className="p-8 md:p-6">
-          <header className="text-center mb-8 md:mb-12">
-            <h1
-              style={{ color: colors.gray.dark }}
-              className="text-3xl md:text-4xl font-bold mb-3"
-            >
-              Object Detection System
-            </h1>
-            <p style={{ color: colors.gray.normal }} className="text-lg">
-              Detect, track, and count object by size
-            </p>
+        <div className="p-6 md:p-8 lg:p-12">
+          {/* Enhanced Header */}
+          <header className="text-center mb-8 md:mb-10">
+            <div className="mb-4">
+              <h1
+                style={{ color: colors.gray.dark }}
+                className="text-3xl md:text-4xl font-bold mb-2 leading-tight"
+              >
+                Object Detection System
+              </h1>
+              <p style={{ color: colors.gray.normal }} className="text-sm md:text-base mb-6 max-w-3xl mx-auto">
+                Advanced object detection and tracking system powered by YOLO technology
+              </p>
+            </div>
+
+            {/* Feature Cards - Inline */}
+            <div className="flex flex-col md:flex-row justify-center items-center gap-3 md:gap-4 max-w-5xl mx-auto">
+              <div
+                className="flex items-center gap-2 px-3 py-2 rounded-lg shadow-sm"
+                style={{ backgroundColor: colors.primary.light }}
+              >
+                <Eye className="w-5 h-5 flex-shrink-0" style={{ color: colors.primary.normal }} />
+                <div className="text-left">
+                  <h3 style={{ color: colors.primary.dark }} className="font-semibold text-xs md:text-sm">
+                    Real-time Detection
+                  </h3>
+                </div>
+              </div>
+
+              <div
+                className="flex items-center gap-2 px-3 py-2 rounded-lg shadow-sm"
+                style={{ backgroundColor: colors.secondary.light }}
+              >
+                <Target className="w-5 h-5 flex-shrink-0" style={{ color: colors.secondary.normal }} />
+                <div className="text-left">
+                  <h3 style={{ color: colors.secondary.dark }} className="font-semibold text-xs md:text-sm">
+                    Precise Tracking
+                  </h3>
+                </div>
+              </div>
+
+              <div
+                className="flex items-center gap-2 px-3 py-2 rounded-lg shadow-sm"
+                style={{ backgroundColor: colors.success.light }}
+              >
+                <BarChart3 className="w-5 h-5 flex-shrink-0" style={{ color: colors.success.normal }} />
+                <div className="text-left">
+                  <h3 style={{ color: colors.success.dark }} className="font-semibold text-xs md:text-sm">
+                    Detailed Analysis
+                  </h3>
+                </div>
+              </div>
+            </div>
           </header>
 
-          <div className="max-w-375 mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
+          <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
 
             {/* Upload */}
             <div
               style={{ backgroundColor: colors.background.normal }}
-              className="rounded-2xl shadow-xl p-6 md:p-8"
+              className="rounded-2xl shadow-xl p-5 md:p-6 min-h-96 flex flex-col"
             >
               <h2
                 style={{ color: colors.gray.dark }}
-                className="text-2xl font-bold mb-6 flex items-center"
+                className="text-lg md:text-xl font-bold mb-4 flex items-center"
               >
                 <Folder
-                  className="w-6 h-6 mr-2"
+                  className="w-5 h-5 mr-2"
                   style={{ color: colors.primary.normal }}
                 />{" "}
                 Upload Video
               </h2>
+
+              {/* Info Box */}
               <div
-                className="border-2 border-dashed rounded-lg px-4 py-2 flex items-center justify-between cursor-pointer hover:transition-colors"
+                className="p-3 rounded-lg mb-4 border-l-4 flex-shrink-0"
+                style={{
+                  backgroundColor: colors.primary.light,
+                  borderColor: colors.primary.normal,
+                }}
+              >
+                <p
+                  style={{ color: colors.primary.dark }}
+                  className="text-xs font-medium"
+                >
+                  <Zap className="w-3 h-3 inline mr-1" />
+                  MP4, WebM, MOV, AVI • Max 100MB • High-quality recommended
+                </p>
+              </div>
+
+              <div
+                // className="border-2 border-dashed rounded-lg px-4 py-8 md:py-12 flex items-center justify-center cursor-pointer hover:transition-colors"
+                className={`border-2 border-dashed rounded-lg px-4 flex items-center justify-center cursor-pointer hover:transition-colors ${
+                        videoFile ? "py-3" : "py-8 md:py-12"
+                      }`}
                 style={{
                   borderColor: colors.primary.light,
                   backgroundColor: colors.background.dark,
@@ -223,73 +291,87 @@ function App() {
                 />
 
                 {videoFile ? (
-                  <div className="flex items-center gap-2 truncate">
+                  <div className="flex items-center gap-2 w-full">
                     <Check
-                      className="w-5 h-5"
+                      className="w-6 h-6 shrink-0"
                       style={{ color: colors.success.normal }}
                     />
-                    <p
-                      style={{ color: colors.gray.dark }}
-                      className="text-sm truncate"
-                    >
-                      {videoFile.name}
-                    </p>
+                    {/* <div className="text-left"> */}
+                      <p
+                        style={{ color: colors.gray.dark }}
+                        className="text-xs font-semibold truncate"
+                      >
+                        {videoFile.name}
+                      </p>
+                      <p style={{ color: colors.gray.normal }} className="text-xs shrink-0 ml-auto">
+                        {(videoFile.size / (1024 * 1024)).toFixed(2)} MB
+                      </p>
+                    {/* </div> */}
                   </div>
                 ) : (
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-col items-center gap-2 text-center">
                     <Folder
-                      className="w-5 h-5"
+                      className="w-8 h-8"
                       style={{ color: colors.gray.normal }}
                     />
                     <span
-                      className="text-sm"
+                      className="text-sm font-semibold"
+                      style={{ color: colors.gray.dark }}
+                    >
+                      Click to upload
+                    </span>
+                    <span
+                      className="text-xs"
                       style={{ color: colors.gray.normal }}
                     >
-                      Upload Video
+                      or drag & drop
                     </span>
                   </div>
                 )}
               </div>
 
               {previewUrl && (
-                <div className="mt-4">
+                <div className="mt-4 flex-1 flex flex-col">
                   <h3
                     style={{ color: colors.gray.dark }}
-                    className="text-lg font-semibold mb-3"
+                    className="text-sm font-semibold mb-2 flex items-center gap-2 flex-shrink-0"
                   >
-                    Original Video Preview
+                    <Video className="w-4 h-4" style={{ color: colors.primary.normal }} />
+                    Preview
                   </h3>
                   <video
                     src={previewUrl}
                     controls
-                    className="w-full h-48 md:h-64 object-contain rounded-lg shadow-md bg-black"
+                    className="w-full h-44 md:h-56 object-contain rounded-lg shadow-md bg-black"
+
+                    // className="w-full h-32 md:h-40 object-contain rounded-lg shadow-md bg-black"
                   />
                 </div>
               )}
 
               {error && (
                 <div
-                  className="mt-4 p-4 border rounded-lg"
+                  className="mt-4 p-3 rounded-lg border-l-4 flex items-start gap-2 flex-shrink-0"
                   style={{
                     backgroundColor: colors.danger.light,
                     borderColor: colors.danger.normal,
                   }}
                 >
-                  <p style={{ color: colors.danger.dark }}>{error}</p>
+                  <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: colors.danger.normal }} />
+                  <p style={{ color: colors.danger.dark }} className="text-xs">{error}</p>
                 </div>
               )}
 
-              <div className="mt-6 space-y-4">
+              <div className="mt-auto space-y-2 pt-4">
                 <button
   onClick={processVideo}
   disabled={!videoFile || loading}
-  className={`w-full py-4 px-6 rounded-xl font-semibold text-white transition-all ${
-    loading && progress.status === "processing"
+  className={`w-full py-3 px-5 rounded-lg font-medium text-white transition-all text-sm ${loading && progress.status === "processing"
       ? "flex flex-col items-center gap-2"
       : "flex items-center justify-center gap-2"
   }`}
   style={{
-    background: !videoFile || loading ? colors.gray.normal :  gradients.primary, // 3-color gradient,
+    background: !videoFile || loading ? colors.gray.normal :  gradients.primary,
     cursor: !videoFile || loading ? "not-allowed" : "pointer",
   }}
 >
@@ -319,44 +401,42 @@ function App() {
 
                 <button
                   onClick={resetAll}
-                  className="w-full py-3 px-6 rounded-xl font-medium flex items-center justify-center gap-2 hover:opacity-80 transition-opacity"
+                  className="w-full py-2 px-5 rounded-lg font-medium flex items-center justify-center gap-2 hover:opacity-80 transition-opacity text-sm"
                   style={{
                     backgroundColor: colors.gray.dark,
                     color: colors.gray.light,
                   }}
                 >
-                  <RotateCcw className="w-5 h-5" /> Reset
+                  <RotateCcw className="w-4 h-4" /> Reset
                 </button>
               </div>
             </div>
 
             {/* Results  */}
             <div
-              // style={{ backgroundColor: #9477db }}
-              // style={{ background: "linear-gradient(135deg, #cfedfb 0%, #9fdbf6 50%, #56c0f0 100%)" }}
               style={{ background: gradients.card }}
-              className="rounded-2xl shadow-xl p-6 md:p-8"
+              className="rounded-2xl shadow-xl p-5 md:p-6 min-h-96 flex flex-col"
             >
               <h2
                 style={{ color: colors.gray.light }}
-                className="text-2xl font-bold mb-6 flex items-center"
+                className="text-lg md:text-xl font-bold mb-5 flex items-center flex-shrink-0"
               >
                 <BarChart3
-                  className="w-6 h-6 mr-2"
+                  className="w-5 h-5 mr-2"
                   style={{ color: colors.primary.dark }}
                 />{" "}
-                Detection Results
+                Results
               </h2>
 
               {results ? (
-                <>
-                  <div className="mb-6">
+                <div className=" flex-1 flex flex-col">
+                  <div className="flex-1 flex flex-col">
                     <h3
                       style={{ color: colors.gray.dark }}
-                      className="text-xl font-semibold mb-4 flex items-center gap-2"
+                      className="text-sm font-semibold mb-2 flex items-center gap-2 flex-shrink-0"
                     >
                       <Video
-                        className="w-5 h-5"
+                        className="w-4 h-4"
                         style={{ color: colors.primary.dark }}
                       />{" "}
                       Processed Video
@@ -367,7 +447,7 @@ function App() {
                         ref={videoRef}
                         src={processedVideoUrl}
                         controls
-                        className="w-full h-64 md:h-72 object-contain rounded-lg shadow-lg bg-black"
+                        className="w-full h-48 md:h-64 object-contain rounded-lg shadow-lg bg-black"
                         onError={handleVideoError}
                       />
                     ) : (
@@ -377,95 +457,133 @@ function App() {
                     )}
                   </div>
 
-                  {/* Report */}
+                  {/* Enhanced Report */}
                   <div
-                    className="p-4 rounded-lg  shadow-xl  md:p-8 "
+                    className="p-4 rounded-lg shadow-lg flex-1 flex flex-col overflow-y-auto"
                     style={{
                       backgroundColor: colors.gray.light,
-                      // borderColor: colors.gray.normal,
                     }}
                   >
-                    <h3
-                      style={{ color: colors.gray.dark }}
-                      className="font-bold mb-2"
-                    >
-                      Detection Summary
-                    </h3>
-                    <p style={{ color: colors.gray.dark }}>
-                      Total Frames: {results.frame_count}
-                    </p>
-                    <p
-                      style={{ color: colors.gray.dark }}
-                      className="font-semibold mt-3 mb-2"
-                    >
-                      Top Detected Objects:
-                    </p>
-                    {(() => {
-                      const objectCounts = Object.entries(results)
-                        .filter(
-                          ([key]) =>
-                            ![
-                              "frame_count",
-                              "timestamp",
-                              "video_url",
-                              "download_url",
-                              "filename",
-                              "total",
-                            ].includes(key),
-                        )
-                        .sort(([, a], [, b]) => b - a)
-                        .slice(0, 5);
-
-                      return objectCounts.length > 0 ? (
-                        objectCounts.map(([name, count]) => (
-                          <p
-                            key={name}
-                            style={{ color: colors.gray.normal }}
-                            className="text-sm md:text-base"
-                          >
-                            {name}:{" "}
-                            <span
-                              style={{ color: colors.primary.normal }}
-                              className="font-semibold"
-                            >
-                              {count}
-                            </span>
-                          </p>
-                        ))
-                      ) : (
-                        <p style={{ color: colors.gray.normal }}>
-                          No objects detected
+                    <div className="mb-3 flex-shrink-0">
+                      <h3
+                        style={{ color: colors.gray.dark }}
+                        className="font-bold text-sm mb-2 flex items-center gap-2"
+                      >
+                        <BarChart3 className="w-4 h-4" style={{ color: colors.primary.normal }} />
+                        Summary
+                      </h3>
+                      <div 
+                        className="p-2 rounded-lg mb-3"
+                        style={{ backgroundColor: colors.primary.light }}
+                      >
+                        <p style={{ color: colors.gray.dark }} className="text-xs">
+                          <span className="font-semibold text-base" style={{ color: colors.primary.dark }}>
+                            {results.frame_count}
+                          </span>
+                          {" "}Frames
                         </p>
-                      );
-                    })()}
-                    <p
+                      </div>
+                    </div>
+                    
+                    <div className="flex-1 overflow-y-auto">
+                      <p
+                        style={{ color: colors.gray.dark }}
+                        className="font-semibold mb-2 text-xs"
+                      >
+                        Top Objects:
+                      </p>
+                      <div className="space-y-1">
+                        {(() => {
+                          const objectCounts = Object.entries(results)
+                            .filter(
+                              ([key]) =>
+                                ![
+                                  "frame_count",
+                                  "timestamp",
+                                  "video_url",
+                                  "download_url",
+                                  "filename",
+                                  "total",
+                                ].includes(key),
+                            )
+                            .sort(([, a], [, b]) => b - a)
+                            .slice(0, 5);
+
+                          return objectCounts.length > 0 ? (
+                            objectCounts.map(([name, count], idx) => (
+                              <div
+                                key={name}
+                                className="flex items-center justify-between p-1.5 rounded text-xs"
+                                style={{ backgroundColor: colors.background.dark }}
+                              >
+                                <span style={{ color: colors.gray.dark }} className="font-medium truncate mr-2">
+                                  {name}
+                                </span>
+                                <span
+                                  className="font-bold px-2 py-0.5 rounded-full flex-shrink-0"
+                                  style={{ 
+                                    color: colors.primary.normal,
+                                    backgroundColor: colors.primary.light 
+                                  }}
+                                >
+                                  {count}
+                                </span>
+                              </div>
+                            ))
+                          ) : (
+                            <p style={{ color: colors.gray.normal }}>
+                              No objects detected
+                            </p>
+                          );
+                        })()}
+                      </div>
+                    </div>
+
+                    <div
                       style={{
                         color: colors.gray.dark,
                         borderTopColor: colors.gray.normal,
                       }}
-                      className="mt-3 border-t pt-3 font-semibold"
+                      className="mt-2 pt-2 border-t space-y-1 text-xs flex-shrink-0"
                     >
-                      Total Unique: {results.total}
-                    </p>
-                    <p
-                      style={{ color: colors.gray.normal }}
-                      className="text-sm"
-                    >
-                      Processed at:{" "}
-                      {new Date(results.timestamp).toLocaleTimeString()}
-                    </p>
+                      <p className="font-bold">
+                        Total: 
+                        <span
+                          style={{ color: colors.primary.normal }}
+                          className="ml-1 font-bold text-sm"
+                        >
+                          {results.total}
+                        </span>
+                      </p>
+                      <p style={{ color: colors.gray.normal }}>
+                        ⏱️ {new Date(results.timestamp).toLocaleTimeString()}
+                      </p>
+                    </div>
                   </div>
 
                   <button
                     onClick={downloadVideo}
-                    className="mt-4 w-full py-3 px-6 rounded-xl font-semibold text-white flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"
+                    className="w-full py-2 px-5 rounded-lg font-medium text-white text-sm flex items-center justify-center gap-2 hover:opacity-90 transition-opacity shadow-lg mt-3 flex-shrink-0"
                     style={{ backgroundColor: colors.success.normal }}
                   >
-                    <Download className="w-5 h-5" /> Download Processed Video
+                    <Download className="w-4 h-4" /> Download
                   </button>
-                </>
+                </div>
               ) : (
-                <p style={{ color:"white" }}>No results yet.</p>
+                <div 
+                  className="flex-1 flex flex-col items-center justify-center rounded-lg p-8"
+                  style={{ 
+                    background: `linear-gradient(135deg, ${colors.primary.light} 0%, ${colors.secondary.light} 100%)`,
+                  }}
+                >
+                  <Film className="w-16 h-16 mb-4 opacity-60" style={{ color: colors.primary.normal }} />
+                  <p style={{ color: colors.primary.dark }} className="font-bold text-base mb-2">
+                    Ready to Analyze
+                  </p>
+                  <p style={{ color: colors.primary.dark }} className="text-xs text-center leading-relaxed max-w-xs opacity-80">
+                    Upload a video on the left and click "Detect & Count Objects" to see results here
+                  </p>
+                </div>
               )}
             </div>
           </div>
