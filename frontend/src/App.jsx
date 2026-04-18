@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState,useEffect, useRef } from "react";
 import {
   Folder,
   Check,
@@ -20,9 +20,19 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [videoKey, setVideoKey] = useState(Date.now());
-
+  const [jobId, setJobId] = useState(null);
+  const [progress, setProgress] = useState({ current: 0, total: 0, status: null });
   const fileInputRef = useRef(null);
   const videoRef = useRef(null);
+  const pollIntervalRef = useRef(null);
+
+  useEffect(() => {
+  return () => {
+    if (pollIntervalRef.current) {
+      clearInterval(pollIntervalRef.current);
+    }
+  };
+}, []);
 
   const API_URL = "http://localhost:8000";
 
@@ -49,46 +59,98 @@ function App() {
   };
 
   // Process video
+  // const processVideo = async () => {
+  //   if (!videoFile) return;
+
+  //   setLoading(true);
+  //   setError("");
+  //   setProcessedVideoUrl(null);
+  //   setResults(null);
+
+  //   const formData = new FormData();
+  //   formData.append("video", videoFile);
+
+  //   try {
+  //     const response = await fetch(`${API_URL}/process-video`, {
+  //       method: "POST",
+  //       body: formData,
+  //     });
+
+  //     const data = await response.json();
+
+  //     if (!response.ok) {
+  //       throw new Error(data.error || "Processing failed");
+  //     }
+
+  //     console.log("Processing complete:", data);
+
+  //     setResults(data);
+
+  //     // Video URL with cache busting
+  //     if (data.video_url) {
+  //       const videoUrl = `${API_URL}${data.video_url}?t=${Date.now()}`;
+  //       setProcessedVideoUrl(videoUrl);
+  //       setVideoKey(Date.now());
+  //     }
+  //   } catch (err) {
+  //     console.error("Error:", err);
+  //     setError(err.message || "Failed to process video.");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
   const processVideo = async () => {
-    if (!videoFile) return;
+  if (!videoFile) return;
 
-    setLoading(true);
-    setError("");
-    setProcessedVideoUrl(null);
-    setResults(null);
+  setLoading(true);
+  setError("");
+  setProcessedVideoUrl(null);
+  setResults(null);
+  setProgress({ current: 0, total: 0, status: "starting" });
 
-    const formData = new FormData();
-    formData.append("video", videoFile);
+  const formData = new FormData();
+  formData.append("video", videoFile);
 
-    try {
-      const response = await fetch(`${API_URL}/process-video`, {
-        method: "POST",
-        body: formData,
-      });
+  try {
+    // 1. Start the job
+    const startRes = await fetch(`${API_URL}/process-video`, {
+      method: "POST",
+      body: formData,
+    });
+    const { job_id } = await startRes.json();
+    setJobId(job_id);
 
-      const data = await response.json();
+    // 2. Poll for progress
+    pollIntervalRef.current = setInterval(async () => {
+      const progressRes = await fetch(`${API_URL}/progress/${job_id}`);
+      const data = await progressRes.json();
 
-      if (!response.ok) {
-        throw new Error(data.error || "Processing failed");
+      if (data.status === "processing") {
+        setProgress({
+          current: data.current_frame,
+          total: data.total_frames,
+          status: "processing",
+        });
+      } else if (data.status === "completed") {
+        clearInterval(pollIntervalRef.current);
+        setResults(data.result);
+        setProcessedVideoUrl(`${API_URL}${data.result.video_url}?t=${Date.now()}`);
+        setLoading(false);
+        setJobId(null);
+        setProgress({ current: 0, total: 0, status: "completed" });
+      } else if (data.status === "failed") {
+        clearInterval(pollIntervalRef.current);
+        setError(data.error || "Processing failed");
+        setLoading(false);
+        setJobId(null);
       }
-
-      console.log("Processing complete:", data);
-
-      setResults(data);
-
-      // Video URL with cache busting
-      if (data.video_url) {
-        const videoUrl = `${API_URL}${data.video_url}?t=${Date.now()}`;
-        setProcessedVideoUrl(videoUrl);
-        setVideoKey(Date.now());
-      }
-    } catch (err) {
-      console.error("Error:", err);
-      setError(err.message || "Failed to process video.");
-    } finally {
-      setLoading(false);
-    }
-  };
+    }, 1000); // poll every second
+  } catch (err) {
+    console.error(err);
+    setError(err.message || "Failed to start processing.");
+    setLoading(false);
+  }
+};
 
   // Download video
   const downloadVideo = () => {
@@ -104,14 +166,31 @@ function App() {
 
   // Reset everything
   const resetAll = () => {
-    setVideoFile(null);
-    setPreviewUrl(null);
-    setResults(null);
-    setProcessedVideoUrl(null);
-    setError("");
-    setVideoKey(Date.now());
-    if (fileInputRef.current) fileInputRef.current.value = "";
-  };
+  // Stop polling if active
+  if (pollIntervalRef.current) {
+    clearInterval(pollIntervalRef.current);
+    pollIntervalRef.current = null;
+  }
+
+  // Cancel backend job if any (optional but recommended)
+  if (jobId) {
+    fetch(`${API_URL}/cancel/${jobId}`, { method: "POST" }).catch(err => console.warn(err));
+  }
+
+  // Reset all UI states
+  setVideoFile(null);
+  setPreviewUrl(null);
+  setResults(null);
+  setProcessedVideoUrl(null);
+  setError("");
+  setVideoKey(Date.now());
+  setJobId(null);
+  setProgress({ current: 0, total: 0, status: null });
+  setLoading(false);
+
+  // Clear file input
+  if (fileInputRef.current) fileInputRef.current.value = "";
+};
 
   const handleVideoError = (e) => {
     const video = e.target;
@@ -244,26 +323,41 @@ function App() {
 
               <div className="mt-6 space-y-4">
                 <button
-                  onClick={processVideo}
-                  disabled={!videoFile || loading}
-                  className="w-full py-4 px-6 rounded-xl font-semibold text-lg text-white flex items-center justify-center gap-2 transition-all"
-                  style={{
-                    background:
-                      !videoFile || loading
-                        ? colors.gray.normal
-                        : gradients.primary,
-                    cursor: !videoFile || loading ? "not-allowed" : "pointer",
-                    opacity: !videoFile || loading ? 0.6 : 1,
-                  }}
-                >
-                  {loading ? (
-                    "Processing Video..."
-                  ) : (
-                    <>
-                      <Rocket className="w-5 h-5" /> Detect & Count Objects
-                    </>
-                  )}
-                </button>
+  onClick={processVideo}
+  disabled={!videoFile || loading}
+  className={`w-full py-4 px-6 rounded-xl font-semibold text-white transition-all ${
+    loading && progress.status === "processing"
+      ? "flex flex-col items-center gap-2"
+      : "flex items-center justify-center gap-2"
+  }`}
+  style={{
+    background: !videoFile || loading ? colors.gray.normal :  gradients.primary, // 3-color gradient,
+    cursor: !videoFile || loading ? "not-allowed" : "pointer",
+  }}
+>
+  {loading && progress.status === "processing" ? (
+    <>
+      <div className="w-full bg-gray-200 rounded-full h-2.5">
+        <div
+          className="h-2.5 rounded-full transition-all duration-300"
+          style={{
+            width: `${(progress.current / progress.total) * 100}%`,
+            background: "linear-gradient(135deg, #56b4ac, #4ECDC4)", // gradient fill
+          }}
+        ></div>
+      </div>
+      <span className="text-sm mt-1">
+        Frame {progress.current} / {progress.total}
+      </span>
+    </>
+  ) : loading ? (
+    "Starting video processing..."
+  ) : (
+    <>
+      <Rocket className="w-5 h-5" /> Detect & Count Objects
+    </>
+  )}
+</button>
 
                 <button
                   onClick={resetAll}
