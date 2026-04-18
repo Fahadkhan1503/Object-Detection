@@ -39,7 +39,8 @@ function App() {
   };
 }, []);
 
-  const API_URL = "http://localhost:8000";
+  // const API_URL = "http://localhost:8000";
+  const API_URL = "https://muhammadfahad1503-object-detect-backend.hf.space";
 
   // Handle file selection
   const handleFileChange = (e) => {
