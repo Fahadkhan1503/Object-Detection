@@ -1,6 +1,5 @@
 import React, { useState,useEffect, useRef } from "react";
-import {
-  Folder,
+import {Folder,
   Check,
   BarChart3,
   Video,
@@ -59,46 +58,6 @@ function App() {
   };
 
   // Process video
-  // const processVideo = async () => {
-  //   if (!videoFile) return;
-
-  //   setLoading(true);
-  //   setError("");
-  //   setProcessedVideoUrl(null);
-  //   setResults(null);
-
-  //   const formData = new FormData();
-  //   formData.append("video", videoFile);
-
-  //   try {
-  //     const response = await fetch(`${API_URL}/process-video`, {
-  //       method: "POST",
-  //       body: formData,
-  //     });
-
-  //     const data = await response.json();
-
-  //     if (!response.ok) {
-  //       throw new Error(data.error || "Processing failed");
-  //     }
-
-  //     console.log("Processing complete:", data);
-
-  //     setResults(data);
-
-  //     // Video URL with cache busting
-  //     if (data.video_url) {
-  //       const videoUrl = `${API_URL}${data.video_url}?t=${Date.now()}`;
-  //       setProcessedVideoUrl(videoUrl);
-  //       setVideoKey(Date.now());
-  //     }
-  //   } catch (err) {
-  //     console.error("Error:", err);
-  //     setError(err.message || "Failed to process video.");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
   const processVideo = async () => {
   if (!videoFile) return;
 
@@ -211,7 +170,6 @@ function App() {
   
   return (
     <div
-      // style={{ backgroundColor: colors.background.subtle }}
       style={{ background: gradients.backgroundwall }}
       className="min-h-screen flex flex-col"
     >
