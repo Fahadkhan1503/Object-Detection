@@ -11,6 +11,7 @@ import {Folder,
   Eye,
   Target,
   Film,
+  Loader2
 } from "lucide-react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
@@ -374,22 +375,46 @@ function App() {
     background: !videoFile || loading ? colors.gray.normal :  gradients.primary,
     cursor: !videoFile || loading ? "not-allowed" : "pointer",
   }}
->
-  {loading && progress.status === "processing" ? (
-    <>
-      <div className="w-full bg-gray-200 rounded-full h-2.5">
+> 
+{loading && progress.status === "processing" ? (
+  <>
+    <div className="w-full flex flex-col gap-1.5">
+      <div className="flex justify-between items-center">
+        <div className="flex items-center gap-2">
+          <Loader2 className="w-3 h-3 animate-spin" />
+          <span className="text-xs font-medium opacity-90">
+            {progress.current < progress.total * 0.15
+              ? "Initializing detection engine..."
+              : progress.current < progress.total * 0.4
+              ? "Detecting & classifying objects..."
+              : progress.current < progress.total * 0.7
+              ? "Tracking unique instances..."
+              : "Finalizing & writing output..."}
+          </span>
+        </div>
+        <span className="text-xs font-bold">
+          {Math.round((progress.current / progress.total) * 100)}%
+        </span>
+      </div>
+      <div
+        className="w-full rounded-full h-2 overflow-hidden"
+        style={{ backgroundColor: "rgba(255,255,255,0.25)" }}
+      >
         <div
-          className="h-2.5 rounded-full transition-all duration-300"
+          className="h-2 rounded-full transition-all duration-500 ease-out"
           style={{
             width: `${(progress.current / progress.total) * 100}%`,
-            background: "linear-gradient(135deg, #56b4ac, #4ECDC4)", // gradient fill
+            background: "linear-gradient(90deg, #4ECDC4, #a8edea)",
+            boxShadow: "0 0 8px rgba(78,205,196,0.6)",
           }}
-        ></div>
+        />
       </div>
-      <span className="text-sm mt-1">
+      <span className="text-xs opacity-70 text-right">
         Frame {progress.current} / {progress.total}
       </span>
-    </>
+    </div>
+  </>
+  
   ) : loading ? (
     "Starting video processing..."
   ) : (
