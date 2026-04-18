@@ -202,7 +202,7 @@ function App() {
                 className="flex items-center gap-2 px-3 py-2 rounded-lg shadow-sm"
                 style={{ backgroundColor: colors.primary.light }}
               >
-                <Eye className="w-5 h-5 flex-shrink-0" style={{ color: colors.primary.normal }} />
+                <Eye className="w-5 h-5 shrink-0" style={{ color: colors.primary.normal }} />
                 <div className="text-left">
                   <h3 style={{ color: colors.primary.dark }} className="font-semibold text-xs md:text-sm">
                     Real-time Detection
@@ -214,7 +214,7 @@ function App() {
                 className="flex items-center gap-2 px-3 py-2 rounded-lg shadow-sm"
                 style={{ backgroundColor: colors.secondary.light }}
               >
-                <Target className="w-5 h-5 flex-shrink-0" style={{ color: colors.secondary.normal }} />
+                <Target className="w-5 h-5 shrink-0" style={{ color: colors.secondary.normal }} />
                 <div className="text-left">
                   <h3 style={{ color: colors.secondary.dark }} className="font-semibold text-xs md:text-sm">
                     Precise Tracking
@@ -226,7 +226,7 @@ function App() {
                 className="flex items-center gap-2 px-3 py-2 rounded-lg shadow-sm"
                 style={{ backgroundColor: colors.success.light }}
               >
-                <BarChart3 className="w-5 h-5 flex-shrink-0" style={{ color: colors.success.normal }} />
+                <BarChart3 className="w-5 h-5 shrink-0" style={{ color: colors.success.normal }} />
                 <div className="text-left">
                   <h3 style={{ color: colors.success.dark }} className="font-semibold text-xs md:text-sm">
                     Detailed Analysis
@@ -256,7 +256,7 @@ function App() {
 
               {/* Info Box */}
               <div
-                className="p-3 rounded-lg mb-4 border-l-4 flex-shrink-0"
+                className="p-3 rounded-lg mb-4 border-l-4 shrink-0"
                 style={{
                   backgroundColor: colors.primary.light,
                   borderColor: colors.primary.normal,
@@ -334,7 +334,7 @@ function App() {
                 <div className="mt-4 flex-1 flex flex-col">
                   <h3
                     style={{ color: colors.gray.dark }}
-                    className="text-sm font-semibold mb-2 flex items-center gap-2 flex-shrink-0"
+                    className="text-sm font-semibold mb-2 flex items-center gap-2 shrink-0"
                   >
                     <Video className="w-4 h-4" style={{ color: colors.primary.normal }} />
                     Preview
@@ -351,13 +351,13 @@ function App() {
 
               {error && (
                 <div
-                  className="mt-4 p-3 rounded-lg border-l-4 flex items-start gap-2 flex-shrink-0"
+                  className="mt-4 p-3 rounded-lg border-l-4 flex items-start gap-2 shrink-0"
                   style={{
                     backgroundColor: colors.danger.light,
                     borderColor: colors.danger.normal,
                   }}
                 >
-                  <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: colors.danger.normal }} />
+                  <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" style={{ color: colors.danger.normal }} />
                   <p style={{ color: colors.danger.dark }} className="text-xs">{error}</p>
                 </div>
               )}
@@ -419,7 +419,7 @@ function App() {
             >
               <h2
                 style={{ color: colors.gray.light }}
-                className="text-lg md:text-xl font-bold mb-5 flex items-center flex-shrink-0"
+                className="text-lg md:text-xl font-bold mb-5 flex items-center shrink-0"
               >
                 <BarChart3
                   className="w-5 h-5 mr-2"
@@ -433,7 +433,7 @@ function App() {
                   <div className="flex-1 flex flex-col">
                     <h3
                       style={{ color: colors.gray.dark }}
-                      className="text-sm font-semibold mb-2 flex items-center gap-2 flex-shrink-0"
+                      className="text-sm font-semibold mb-2 flex items-center gap-2 shrink-0"
                     >
                       <Video
                         className="w-4 h-4"
@@ -464,7 +464,7 @@ function App() {
                       backgroundColor: colors.gray.light,
                     }}
                   >
-                    <div className="mb-3 flex-shrink-0">
+                    <div className="mb-3 shrink-0">
                       <h3
                         style={{ color: colors.gray.dark }}
                         className="font-bold text-sm mb-2 flex items-center gap-2"
@@ -520,7 +520,7 @@ function App() {
                                   {name}
                                 </span>
                                 <span
-                                  className="font-bold px-2 py-0.5 rounded-full flex-shrink-0"
+                                  className="font-bold px-2 py-0.5 rounded-full shrink-0"
                                   style={{ 
                                     color: colors.primary.normal,
                                     backgroundColor: colors.primary.light 
@@ -544,7 +544,7 @@ function App() {
                         color: colors.gray.dark,
                         borderTopColor: colors.gray.normal,
                       }}
-                      className="mt-2 pt-2 border-t space-y-1 text-xs flex-shrink-0"
+                      className="mt-2 pt-2 border-t space-y-1 text-xs shrink-0"
                     >
                       <p className="font-bold">
                         Total: 
@@ -563,7 +563,7 @@ function App() {
 
                   <button
                     onClick={downloadVideo}
-                    className="w-full py-2 px-5 rounded-lg font-medium text-white text-sm flex items-center justify-center gap-2 hover:opacity-90 transition-opacity shadow-lg mt-3 flex-shrink-0"
+                    className="w-full py-2 px-5 rounded-lg font-medium text-white text-sm flex items-center justify-center gap-2 hover:opacity-90 transition-opacity shadow-lg mt-3 shrink-0"
                     style={{ backgroundColor: colors.success.normal }}
                   >
                     <Download className="w-4 h-4" /> Download
